@@ -82,7 +82,7 @@ sub main{
 
 	my $tool_config = $args{tool_config};
 	my $data_config = $args{data_config};
-
+	#my $output_directory = $args{output_directory};
 	### PREAMBLE ######################################################################################
 	unless($args{dry_run}) {
 		print "Initiating FASTQC pipeline...\n";
@@ -276,6 +276,10 @@ sub main{
 	my $extract_cmd = get_fastqc_metrics(output_dir => $output_directory);
 
 	# format command to collate results
+	use Cwd 'abs_path'; ### modified by Joseph 
+
+	# Get the absolute path of the 'scripts' directory
+	my $cwd = abs_path('scripts'); ### modified by Joseph 
 	my $combine_cmd = "Rscript $cwd/combine_key_metrics.R";
 
 	my $collate_cmd = $extract_cmd . "\n" . $combine_cmd;
