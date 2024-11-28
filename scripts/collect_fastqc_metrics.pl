@@ -272,15 +272,26 @@ sub main{
 			}
 		}
 
+	### format command to extract info from output
+	##my $extract_cmd = get_fastqc_metrics(output_dir => $output_directory);
+
+	### format command to collate results
+	##use Cwd 'abs_path'; ### modified by Joseph 
+
+	### Get the absolute path of the 'scripts' directory
+	##my $cwd = abs_path('scripts'); ### modified by Joseph 
+	##my $combine_cmd = "Rscript $cwd/combine_key_metrics.R";
+
+
 	# format command to extract info from output
 	my $extract_cmd = get_fastqc_metrics(output_dir => $output_directory);
 
 	# format command to collate results
-	use Cwd 'abs_path'; ### modified by Joseph 
+	use Cwd 'abs_path'; ### modified by Joseph
 
-	# Get the absolute path of the 'scripts' directory
-	my $cwd = abs_path('scripts'); ### modified by Joseph 
-	my $combine_cmd = "Rscript $cwd/combine_key_metrics.R";
+	# Directly set the correct path for the R script
+	my $combine_cmd = "Rscript /home/share/projects/data-other/genetics_pipeline/pipeline-suite/scripts/combine_key_metrics.R";
+
 
 	my $collate_cmd = $extract_cmd . "\n" . $combine_cmd;
 	$collate_cmd .= "\n\n" . join("\n",
