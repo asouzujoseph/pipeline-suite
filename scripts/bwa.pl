@@ -151,6 +151,9 @@ sub get_merge_command {
 		};
 
 	my $merge_command;
+	# Ensure $picard_dir is set to the correct directory
+	#my $picard_dir = '/home/share/projects/data-other/genetics_pipeline';  # Update this path to the correct location
+	#my $picard_jar = "$picard_dir/picard.jar";
 
 	# if data is WGS, picard merge may struggle, so use sambamba instead
 	if ('sambamba' eq $args->{tool}) {
@@ -183,6 +186,7 @@ sub get_merge_command {
 	return($merge_command);
 	}
 
+# format command to merge bams
 sub get_merge_markdup_command {
 	my $args = {
 		input		=> undef,
@@ -196,6 +200,9 @@ sub get_merge_markdup_command {
 		};
 
 	my $merge_command;
+	# Ensure $picard_dir is set to the correct directory
+	my $picard_dir = '/home/share/projects/data-other/genetics_pipeline';  # Update this path to the correct location
+	my $picard_jar = "$picard_dir/picard.jar";
 
 	# if data is WGS, picard MarkDup may struggle, so use sambamba instead
 	if ('sambamba' eq $args->{tool}) {
@@ -216,7 +223,7 @@ sub get_merge_markdup_command {
 		} elsif ('picard' eq $args->{tool}) {
 		$merge_command = join(' ',
 			'java -Xmx' . $args->{java_mem},
-			'-jar $picard_dir/picard.jar MarkDuplicates',
+			'-jar', $picard_jar, 'MarkDuplicates',
 			'INPUT=' . join(' INPUT=', @{$args->{input}}),
 			'OUTPUT=' . $args->{output},
 			'METRICS_FILE=' . $args->{output} . '.metrics',
@@ -235,6 +242,7 @@ sub get_merge_markdup_command {
 
 	return($merge_command);
 	}
+
 
 # format command to run bwa_meth (for EM-Seq)
 sub get_bwameth_command {
