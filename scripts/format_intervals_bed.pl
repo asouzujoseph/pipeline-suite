@@ -28,7 +28,7 @@ if ($help) {
         }
 
 $dictionary = $reference;
-$dictionary =~ s/\.fa/\.dict/;
+$dictionary =~ s/\.fasta/\.dict/;
 
 ### FUNCTIONS ######################################################################################
 # format command to convert intervals.bed to picard-style intervals.list
@@ -38,9 +38,11 @@ sub get_format_intervals_command {
 		picard_out	=> undef,
 		@_
 		);
+	my $picard_dir = '/home/share/projects/data-other/genetics_pipeline';  # Update this path to the correct location
+	my $picard_jar = "$picard_dir/picard.jar";
 
 	my $format_command .= "\n\n" . join(' ',
-		'java -jar $picard_dir/picard.jar BedToIntervalList',
+		'java -jar', $picard_jar, 'BedToIntervalList',
 		'I=' . $args{input_bed},
 		'SD=' . $dictionary,
 		'O=' . $args{picard_out}
